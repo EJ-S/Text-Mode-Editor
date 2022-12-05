@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var showingTileSelect = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+        HStack {
+            Button(action: {
+                self.showingTileSelect.toggle()
+            }) {
+                Text("Select Tile")
+            }.sheet(isPresented: $showingTileSelect) {
+                TileSelectView()
+            }
+        }.frame(maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .topLeading)
+        .padding(10)
+    }
+}
+
+struct TileSelectView: View {
+    var body: some View {
+        Text("This is the Tile Select Screen")
     }
 }
 
