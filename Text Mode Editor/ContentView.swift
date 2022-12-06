@@ -78,6 +78,10 @@ class ColorsChosen: ObservableObject {
     @Published var back = Color.black
 }
 
+class TileChosen: ObservableObject {
+    @Published var tile = 0
+}
+
 
 func getPixelData(tile: UInt8, front: Color, back: Color) -> [UInt8] {
     var pixelData = [UInt8](repeating: 0, count: 192)
@@ -123,7 +127,7 @@ func MakeImage(tile: UInt8, front: Color, back: Color) -> CGImage {
 struct ContentView: View {
     @State var showingTileSelect = false
     @StateObject private var colors = ColorsChosen()
-
+    @StateObject private var tileCosen = TileChosen()
     
     var body: some View {
         HStack {
@@ -132,7 +136,7 @@ struct ContentView: View {
             }) {
                 Text("Select Tile")
             }.sheet(isPresented: $showingTileSelect) {
-                TileSelectView().environmentObject(colors)
+                TileSelectView().environmentObject(colors).environmentObject(tileCosen)
             }.buttonStyle(.borderedProminent)
             ColorPicker("Primary", selection: $colors.front)
             ColorPicker("Accent", selection: $colors.back)
@@ -140,51 +144,25 @@ struct ContentView: View {
                 maxHeight: .infinity,
                 alignment: .topLeading)
         .padding(10)
-        
-        VStack {
-            HStack{
-                ForEach(0..<10) {
-                    Image(MakeImage(tile: UInt8($0),
-                                    front: colors.front,
-                                    back: colors.back),
-                          scale: (1/3),
-                          label: Text(""))
-                    .interpolation(Image.Interpolation.none)
-                }
-            }
-            HStack{
-                ForEach(10..<21) {
-                    Image(MakeImage(tile: UInt8($0),
-                                    front: colors.front,
-                                    back: colors.back),
-                          scale: (1/3),
-                          label: Text(""))
-                    .interpolation(Image.Interpolation.none)
-                }
-            }
-            HStack{
-                ForEach(21..<32) {
-                    Image(MakeImage(tile: UInt8($0),
-                                    front: colors.front,
-                                    back: colors.back),
-                          scale: (1/3),
-                          label: Text(""))
-                    .interpolation(Image.Interpolation.none)
-                }
-            }
-        }
+        Image(MakeImage(tile: UInt8(tileCosen.tile),
+                        front: colors.front,
+                        back: colors.back),
+              scale: (1/3),
+              label: Text(""))
+        .interpolation(Image.Interpolation.none)
     }
 }
 
 struct TileSelectView: View {
     @EnvironmentObject private var colors: ColorsChosen
+    @EnvironmentObject private var tileChosen: TileChosen
     var body: some View {
         VStack{
             ForEach(0..<4) { j in
                 HStack{
                     ForEach(0..<8) { t in
                         Button(action: {
-                            print("\(j*8+t) pressed")
+                            tileChosen.tile = j*8+t
                         }) {
                             Image(MakeImage(tile: UInt8(j*8+t),
                                             front: colors.front,
