@@ -73,6 +73,20 @@ let tiles = [[0,0,1,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,1,0,
              [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
               0,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0],
+             [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,0,1,1,0,
+              1,1,1,1,1,1,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0],
+             [0,0,0,1,1,0,0,0,0,0,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,
+              0,0,0,0,0,1,1,0,0,1,1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0],
+             [0,1,1,0,0,0,1,0,0,1,1,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,
+              0,0,1,1,0,0,0,0,0,1,1,0,0,1,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0],
+             [0,0,1,1,1,1,0,0,0,1,1,0,0,1,1,0,0,0,1,1,1,1,0,0,0,0,1,1,1,0,0,0,
+              0,1,1,0,0,1,1,1,0,1,1,0,0,1,1,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,
               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
 class ColorsChosen: ObservableObject {
@@ -155,27 +169,24 @@ struct ContentView: View {
         VStack {
             VStack{
                 HStack {
+                    Text("Tile")
                     Button(action: {
                         self.showingTileSelect.toggle()
                     }) {
-                        Text("Select Tile")
+                        Image(MakeImage(tile: UInt8(tileChosen.tile),
+                                        front: colors.front,
+                                        back: colors.back),
+                              scale: (1/3),
+                              label: Text("button"))
+                        .interpolation(Image.Interpolation.none)
                     }.sheet(isPresented: $showingTileSelect) {
                         TileSelectView().environmentObject(colors).environmentObject(tileChosen)
-                    }.buttonStyle(.borderedProminent)
+                    }
                     ColorPicker("Primary", selection: $colors.front)
                     ColorPicker("Accent", selection: $colors.back)
                 }.frame(maxWidth: .infinity,
                         maxHeight: 25,
                         alignment: .top)
-                HStack {
-                    Image(MakeImage(tile: UInt8(tileChosen.tile),
-                                    front: colors.front,
-                                    back: colors.back),
-                          scale: (1/3),
-                          label: Text("button"))
-                    .interpolation(Image.Interpolation.none)
-                    Text("Current Tile")
-                }
             }
             .padding(10)
             Spacer(minLength: 100)
@@ -211,7 +222,7 @@ struct TileSelectView: View {
     @EnvironmentObject private var tileChosen: TileChosen
     var body: some View {
         VStack{
-            ForEach(0..<4) { j in
+            ForEach(0..<5) { j in
                 HStack{
                     ForEach(0..<8) { t in
                         Button(action: {
