@@ -164,16 +164,20 @@ struct ContentView: View {
                 maxHeight: .infinity,
                 alignment: .topLeading)
         .padding(10)
-        HStack {
-            ForEach(0..<8) { i in
-                Image(MakeImage(tile: UInt8(tileArray[i].tile),
-                                front: tileArray[i].front,
-                                back: tileArray[i].back),
-                      scale: (1/3),
-                      label: Text("button"))
-                .interpolation(Image.Interpolation.none)
+        VStack(alignment: .leading, spacing: 0, content: {
+            ForEach(0..<8) { j in
+                HStack(alignment: .top, spacing: 0, content: {
+                    ForEach(0..<8) { i in
+                        Image(MakeImage(tile: UInt8(tileArray[j*8+i].tile),
+                                        front: tileArray[j*8+i].front,
+                                        back: tileArray[j*8+i].back),
+                              scale: (1/3),
+                              label: Text("button"))
+                        .interpolation(Image.Interpolation.none)
+                    }
+                })
             }
-        }.padding(0)
+        })
         Spacer(minLength: 300)
     }
 }
