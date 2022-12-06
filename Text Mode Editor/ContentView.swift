@@ -71,7 +71,9 @@ let tiles = [[0,0,1,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,1,0,
              [0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,1,0,
               0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0],
              [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
-              0,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0]]
+              0,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
 class ColorsChosen: ObservableObject {
     @Published var front = Color.white
@@ -83,9 +85,22 @@ class TileChosen: ObservableObject {
 }
 
 class TileInfo {
-    var tile = 0
+    var tile = 32
     var front = Color.white
     var back = Color.black
+    
+    init(tile: Int = 32, front: SwiftUI.Color = Color.white, back: SwiftUI.Color = Color.black) {
+        self.tile = tile
+        self.front = front
+        self.back = back
+    }
+}
+
+
+func updateTileArray(tileArray: [TileInfo], j: Int, i: Int, t: TileInfo) -> [TileInfo] {
+    var tileArrayCpy = tileArray
+    tileArrayCpy[j*15+i] = t
+    return tileArrayCpy
 }
 
 
@@ -134,51 +149,60 @@ struct ContentView: View {
     @State var showingTileSelect = false
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
-    private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 64)
+    @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
     
     var body: some View {
-        VStack{
-            HStack {
-                Button(action: {
-                    self.showingTileSelect.toggle()
-                }) {
-                    Text("Select Tile")
-                }.sheet(isPresented: $showingTileSelect) {
-                    TileSelectView().environmentObject(colors).environmentObject(tileChosen)
-                }.buttonStyle(.borderedProminent)
-                ColorPicker("Primary", selection: $colors.front)
-                ColorPicker("Accent", selection: $colors.back)
-            }.frame(maxWidth: .infinity,
-                    maxHeight: 25,
-                    alignment: .top)
-            HStack {
-                Image(MakeImage(tile: UInt8(tileChosen.tile),
-                                front: colors.front,
-                                back: colors.back),
-                      scale: (1/3),
-                      label: Text("button"))
-                .interpolation(Image.Interpolation.none)
-                Text("Current Tile")
+        VStack {
+            VStack{
+                HStack {
+                    Button(action: {
+                        self.showingTileSelect.toggle()
+                    }) {
+                        Text("Select Tile")
+                    }.sheet(isPresented: $showingTileSelect) {
+                        TileSelectView().environmentObject(colors).environmentObject(tileChosen)
+                    }.buttonStyle(.borderedProminent)
+                    ColorPicker("Primary", selection: $colors.front)
+                    ColorPicker("Accent", selection: $colors.back)
+                }.frame(maxWidth: .infinity,
+                        maxHeight: 25,
+                        alignment: .top)
+                HStack {
+                    Image(MakeImage(tile: UInt8(tileChosen.tile),
+                                    front: colors.front,
+                                    back: colors.back),
+                          scale: (1/3),
+                          label: Text("button"))
+                    .interpolation(Image.Interpolation.none)
+                    Text("Current Tile")
+                }
             }
-        }.frame(maxWidth: .infinity,
-                maxHeight: .infinity,
-                alignment: .topLeading)
-        .padding(10)
-        VStack(alignment: .leading, spacing: 0, content: {
-            ForEach(0..<8) { j in
-                HStack(alignment: .top, spacing: 0, content: {
-                    ForEach(0..<8) { i in
-                        Image(MakeImage(tile: UInt8(tileArray[j*8+i].tile),
-                                        front: tileArray[j*8+i].front,
-                                        back: tileArray[j*8+i].back),
-                              scale: (1/3),
-                              label: Text("button"))
-                        .interpolation(Image.Interpolation.none)
-                    }
-                })
-            }
-        })
-        Spacer(minLength: 300)
+            .padding(10)
+            Spacer(minLength: 100)
+            VStack(alignment: .center, spacing: 0, content: {
+                ForEach(0..<15) { j in
+                    HStack(alignment: .top, spacing: 0, content: {
+                        ForEach(0..<15) { i in
+                            Button(action: {
+                                let t = TileInfo(tile: tileChosen.tile,
+                                                 front: colors.front,
+                                                 back: colors.back)
+                                tileArray = updateTileArray(tileArray: tileArray, j: j, i: i, t: t)
+                            }) {
+                                Image(MakeImage(tile: UInt8(tileArray[j*15+i].tile),
+                                                front: tileArray[j*15+i].front,
+                                                back: tileArray[j*15+i].back),
+                                      scale: (1/3),
+                                      label: Text("button"))
+                                .interpolation(Image.Interpolation.none)
+                            }
+                        }
+                    })
+                }
+            }).frame(maxWidth: .infinity,
+                     maxHeight: .infinity,
+                     alignment: .top)
+        }.background(Color.mint)
     }
 }
 
