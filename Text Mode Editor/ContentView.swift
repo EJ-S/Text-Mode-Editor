@@ -231,7 +231,39 @@ let tiles = [[0,0,1,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,1,0,
              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,
               1,1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0],
              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,
+              0,0,0,1,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0],
+             [0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,
+              1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0],
+             [0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,0,0,0,
+              1,1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0],
+             [1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,
+              1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0],
+             [1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,
+              1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0],
+             [0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,
+              0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1],
+             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+              0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+             [0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,
+              0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+              1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0],
+             [0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,0,0,0,
+              1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,
+              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+             [1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,
+              0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1]]
 
 
 class ColorsChosen: ObservableObject {
@@ -266,14 +298,26 @@ func updateTileArray(tileArray: [TileInfo], j: Int, i: Int, t: TileInfo) -> [Til
 func getPixelData(tile: UInt8, front: Color, back: Color) -> [UInt8] {
     var pixelData = [UInt8](repeating: 0, count: 192)
     for i in stride(from:0, to: 192, by: 3) {
-        if tiles[Int(tile)][i/3] % 2 == 1 {
-            pixelData[i] = UInt8(UIColor(front).cgColor.components![0]*255)
-            pixelData[i+1] = UInt8(UIColor(front).cgColor.components![1]*255)
-            pixelData[i+2] = UInt8(UIColor(front).cgColor.components![2]*255)
+        if tile < 128 {
+            if tiles[Int(tile)][i/3] % 2 == 1 {
+                pixelData[i] = UInt8(UIColor(front).cgColor.components![0]*255)
+                pixelData[i+1] = UInt8(UIColor(front).cgColor.components![1]*255)
+                pixelData[i+2] = UInt8(UIColor(front).cgColor.components![2]*255)
+            } else {
+                pixelData[i] = UInt8(UIColor(back).cgColor.components![0]*255)
+                pixelData[i+1] = UInt8(UIColor(back).cgColor.components![1]*255)
+                pixelData[i+2] = UInt8(UIColor(back).cgColor.components![2]*255)
+            }
         } else {
-            pixelData[i] = UInt8(UIColor(back).cgColor.components![0]*255)
-            pixelData[i+1] = UInt8(UIColor(back).cgColor.components![1]*255)
-            pixelData[i+2] = UInt8(UIColor(back).cgColor.components![2]*255)
+            if tiles[Int(tile-128)][i/3] % 2 == 1 {
+                pixelData[i] = UInt8(UIColor(back).cgColor.components![0]*255)
+                pixelData[i+1] = UInt8(UIColor(back).cgColor.components![1]*255)
+                pixelData[i+2] = UInt8(UIColor(back).cgColor.components![2]*255)
+            } else {
+                pixelData[i] = UInt8(UIColor(front).cgColor.components![0]*255)
+                pixelData[i+1] = UInt8(UIColor(front).cgColor.components![1]*255)
+                pixelData[i+2] = UInt8(UIColor(front).cgColor.components![2]*255)
+            }
         }
     }
     return pixelData
@@ -366,14 +410,14 @@ struct TileSelectView: View {
     @EnvironmentObject private var colors: ColorsChosen
     @EnvironmentObject private var tileChosen: TileChosen
     var body: some View {
-        VStack{
-            ForEach(0..<14) { j in
-                HStack{
-                    ForEach(0..<8) { t in
+        VStack(spacing: 1){
+            ForEach(0..<21) { j in
+                HStack(spacing: 1){
+                    ForEach(0..<12) { t in
                         Button(action: {
-                            tileChosen.tile = j*8+t
+                            tileChosen.tile = j*12+t
                         }) {
-                            Image(MakeImage(tile: UInt8(j*8+t),
+                            Image(MakeImage(tile: UInt8(j*12+t),
                                             front: colors.front,
                                             back: colors.back),
                                   scale: (1/3),
@@ -382,6 +426,20 @@ struct TileSelectView: View {
                         }
                     }
                 }.padding(0)
+            }
+            HStack(spacing: 1) {
+                ForEach(252..<256) { i in
+                    Button(action: {
+                        tileChosen.tile = i
+                    }) {
+                        Image(MakeImage(tile: UInt8(i),
+                                        front: colors.front,
+                                        back: colors.back),
+                              scale: (1/3),
+                              label: Text(""))
+                        .interpolation(Image.Interpolation.none)
+                    }
+                }
             }
         }.frame(maxWidth: .infinity,
                 maxHeight: .infinity,
