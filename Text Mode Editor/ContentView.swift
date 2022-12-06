@@ -276,11 +276,11 @@ class TileChosen: ObservableObject {
 }
 
 class TileInfo {
-    var tile = 32
-    var front = Color.white
-    var back = Color.black
+    var tile = 127
+    var front = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
+    var back = Color.gray
     
-    init(tile: Int = 32, front: SwiftUI.Color = Color.white, back: SwiftUI.Color = Color.black) {
+    init(tile: Int = 127, front: SwiftUI.Color = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), back: SwiftUI.Color = Color.gray) {
         self.tile = tile
         self.front = front
         self.back = back
@@ -445,7 +445,7 @@ struct TileSelectView: View {
                 maxHeight: .infinity,
                 alignment: .topLeading)
         .padding(10)
-        .background(Color.gray)
+        .background(Color.cyan)
     }
 }
 
