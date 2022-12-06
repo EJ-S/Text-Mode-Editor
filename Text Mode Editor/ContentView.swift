@@ -82,6 +82,12 @@ class TileChosen: ObservableObject {
     @Published var tile = 0
 }
 
+class TileInfo {
+    var tile = 0
+    var front = Color.white
+    var back = Color.black
+}
+
 
 func getPixelData(tile: UInt8, front: Color, back: Color) -> [UInt8] {
     var pixelData = [UInt8](repeating: 0, count: 192)
@@ -127,29 +133,48 @@ func MakeImage(tile: UInt8, front: Color, back: Color) -> CGImage {
 struct ContentView: View {
     @State var showingTileSelect = false
     @StateObject private var colors = ColorsChosen()
-    @StateObject private var tileCosen = TileChosen()
+    @StateObject private var tileChosen = TileChosen()
+    private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 64)
     
     var body: some View {
-        HStack {
-            Button(action: {
-                self.showingTileSelect.toggle()
-            }) {
-                Text("Select Tile")
-            }.sheet(isPresented: $showingTileSelect) {
-                TileSelectView().environmentObject(colors).environmentObject(tileCosen)
-            }.buttonStyle(.borderedProminent)
-            ColorPicker("Primary", selection: $colors.front)
-            ColorPicker("Accent", selection: $colors.back)
+        VStack{
+            HStack {
+                Button(action: {
+                    self.showingTileSelect.toggle()
+                }) {
+                    Text("Select Tile")
+                }.sheet(isPresented: $showingTileSelect) {
+                    TileSelectView().environmentObject(colors).environmentObject(tileChosen)
+                }.buttonStyle(.borderedProminent)
+                ColorPicker("Primary", selection: $colors.front)
+                ColorPicker("Accent", selection: $colors.back)
+            }.frame(maxWidth: .infinity,
+                    maxHeight: 25,
+                    alignment: .top)
+            HStack {
+                Image(MakeImage(tile: UInt8(tileChosen.tile),
+                                front: colors.front,
+                                back: colors.back),
+                      scale: (1/3),
+                      label: Text("button"))
+                .interpolation(Image.Interpolation.none)
+                Text("Current Tile")
+            }
         }.frame(maxWidth: .infinity,
                 maxHeight: .infinity,
                 alignment: .topLeading)
         .padding(10)
-        Image(MakeImage(tile: UInt8(tileCosen.tile),
-                        front: colors.front,
-                        back: colors.back),
-              scale: (1/3),
-              label: Text(""))
-        .interpolation(Image.Interpolation.none)
+        HStack {
+            ForEach(0..<8) { i in
+                Image(MakeImage(tile: UInt8(tileArray[i].tile),
+                                front: tileArray[i].front,
+                                back: tileArray[i].back),
+                      scale: (1/3),
+                      label: Text("button"))
+                .interpolation(Image.Interpolation.none)
+            }
+        }.padding(0)
+        Spacer(minLength: 300)
     }
 }
 
