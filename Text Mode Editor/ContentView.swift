@@ -73,6 +73,11 @@ let tiles = [[0,0,1,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,1,0,
              [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
               0,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0]]
 
+class ColorsChosen: ObservableObject {
+    @Published var front = Color.white
+    @Published var back = Color.black
+}
+
 
 func getPixelData(tile: UInt8, front: Color, back: Color) -> [UInt8] {
     var pixelData = [UInt8](repeating: 0, count: 192)
@@ -117,8 +122,7 @@ func MakeImage(tile: UInt8, front: Color, back: Color) -> CGImage {
 
 struct ContentView: View {
     @State var showingTileSelect = false
-    @State private var front = Color.green
-    @State private var back = Color.black
+    @StateObject private var colors = ColorsChosen()
 
     
     var body: some View {
@@ -128,10 +132,10 @@ struct ContentView: View {
             }) {
                 Text("Select Tile")
             }.sheet(isPresented: $showingTileSelect) {
-                TileSelectView()
+                TileSelectView().environmentObject(colors)
             }.buttonStyle(.borderedProminent)
-            ColorPicker("Primary", selection: $front)
-            ColorPicker("Accent", selection: $back)
+            ColorPicker("Primary", selection: $colors.front)
+            ColorPicker("Accent", selection: $colors.back)
         }.frame(maxWidth: .infinity,
                 maxHeight: .infinity,
                 alignment: .topLeading)
@@ -141,8 +145,8 @@ struct ContentView: View {
             HStack{
                 ForEach(0..<10) {
                     Image(MakeImage(tile: UInt8($0),
-                                    front: front,
-                                    back: back),
+                                    front: colors.front,
+                                    back: colors.back),
                           scale: (1/3),
                           label: Text(""))
                     .interpolation(Image.Interpolation.none)
@@ -151,8 +155,8 @@ struct ContentView: View {
             HStack{
                 ForEach(10..<21) {
                     Image(MakeImage(tile: UInt8($0),
-                                    front: front,
-                                    back: back),
+                                    front: colors.front,
+                                    back: colors.back),
                           scale: (1/3),
                           label: Text(""))
                     .interpolation(Image.Interpolation.none)
@@ -161,8 +165,8 @@ struct ContentView: View {
             HStack{
                 ForEach(21..<32) {
                     Image(MakeImage(tile: UInt8($0),
-                                    front: front,
-                                    back: back),
+                                    front: colors.front,
+                                    back: colors.back),
                           scale: (1/3),
                           label: Text(""))
                     .interpolation(Image.Interpolation.none)
@@ -173,32 +177,25 @@ struct ContentView: View {
 }
 
 struct TileSelectView: View {
+    @EnvironmentObject private var colors: ColorsChosen
     var body: some View {
         VStack{
-            HStack{
-                Button(action: {
-                    print("32 pressed")
-                }) {
-                    VStack{
-                        Image("32")
-                            .resizable()
-                            .scaledToFill()
-                    }.frame(width: 32,
-                            height: 32,
-                            alignment: .topLeading)
-                }
-                Button(action: {
-                    print("160 pressed")
-                }) {
-                    VStack{
-                        Image("160")
-                            .resizable()
-                            .scaledToFill()
-                    }.frame(width: 32,
-                            height: 32,
-                            alignment: .topLeading)
-                }
-            }.padding(1)
+            ForEach(0..<4) { j in
+                HStack{
+                    ForEach(0..<8) { t in
+                        Button(action: {
+                            print("\(j*8+t) pressed")
+                        }) {
+                            Image(MakeImage(tile: UInt8(j*8+t),
+                                            front: colors.front,
+                                            back: colors.back),
+                                  scale: (1/3),
+                                  label: Text(""))
+                            .interpolation(Image.Interpolation.none)
+                        }
+                    }
+                }.padding(0)
+            }
         }.frame(maxWidth: .infinity,
                 maxHeight: .infinity,
                 alignment: .topLeading)
