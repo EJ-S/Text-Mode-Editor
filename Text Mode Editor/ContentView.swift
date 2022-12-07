@@ -222,7 +222,7 @@ let tiles = [[0,0,1,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,0,0,1,1,0,1,1,1,0,
               1,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
              [0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,
               0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1],
-             [0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,1,1,
+             [0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,
               0,0,0,1,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0],
              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
               0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1],
@@ -272,7 +272,7 @@ class ColorsChosen: ObservableObject {
 }
 
 class TileChosen: ObservableObject {
-    @Published var tile = 0
+    @Published var tile = 32
 }
 
 class TileInfo {
@@ -424,6 +424,7 @@ struct ContentView: View {
 struct TileSelectView: View {
     @EnvironmentObject private var colors: ColorsChosen
     @EnvironmentObject private var tileChosen: TileChosen
+    private let tileOrdering = [0]
     var body: some View {
         VStack(spacing: 1){
             ForEach(0..<21) { j in
@@ -438,9 +439,10 @@ struct TileSelectView: View {
                                   scale: (1/3),
                                   label: Text(""))
                             .interpolation(Image.Interpolation.none)
+                            .frame(maxWidth: .infinity)
                         }
                     }
-                }.padding(0)
+                }.padding(0).frame(maxHeight: .infinity)
             }
             HStack(spacing: 1) {
                 ForEach(252..<256) { i in
@@ -453,6 +455,7 @@ struct TileSelectView: View {
                               scale: (1/3),
                               label: Text(""))
                         .interpolation(Image.Interpolation.none)
+                        .frame(maxWidth: .infinity)
                     }
                 }
             }
