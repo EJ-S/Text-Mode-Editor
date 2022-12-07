@@ -424,16 +424,27 @@ struct ContentView: View {
 struct TileSelectView: View {
     @EnvironmentObject private var colors: ColorsChosen
     @EnvironmentObject private var tileChosen: TileChosen
-    private let tileOrdering = [0]
+    private let tileOrdering: [UInt8] = [108,123,112,110,79,80,107,114,85,73,78,77,124,126,109,125,76,122,113,115,74,
+                                75,95,105,100,111,121,98,120,119,99,82,70,64,68,69,101,116,117,97,118,106,103,
+                                84,71,93,72,89,66,67,27,29,40,41,60,62,43,45,42,47,48,49,50,51,52,53,54,55,56,
+                                57,61,94,33,63,58,59,44,46,34,39,81,87,86,91,28,35,36,37,0,30,31,32,102,104,92,
+                                127,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,96,38,
+                                90,88,83,65,171,173,170,175,236,251,240,238,207,208,235,242,213,201,206,205,252,
+                                254,237,253,204,250,241,243,202,203,223,233,228,239,249,226,248,247,227,210,198,
+                                192,196,197,229,244,245,225,246,234,231,212,199,221,200,217,194,195,155,157,168,
+                                169,188,190,230,232,220,255,176,177,178,179,180,181,182,183,184,185,189,222,161,
+                                191,186,187,172,174,162,167,209,215,86,91,156,163,164,165,128,158,159,160,129,130,
+                                131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,
+                                151,152,153,154,224,166,218,216,211,193]
     var body: some View {
         VStack(spacing: 1){
             ForEach(0..<21) { j in
                 HStack(spacing: 1){
                     ForEach(0..<12) { t in
                         Button(action: {
-                            tileChosen.tile = j*12+t
+                            tileChosen.tile = Int(tileOrdering[j*12+t])
                         }) {
-                            Image(MakeImage(tile: UInt8(j*12+t),
+                            Image(MakeImage(tile: tileOrdering[j*12+t],
                                             front: colors.front,
                                             back: colors.back),
                                   scale: (1/3),
@@ -447,9 +458,9 @@ struct TileSelectView: View {
             HStack(spacing: 1) {
                 ForEach(252..<256) { i in
                     Button(action: {
-                        tileChosen.tile = i
+                        tileChosen.tile = Int(tileOrdering[i])
                     }) {
-                        Image(MakeImage(tile: UInt8(i),
+                        Image(MakeImage(tile: tileOrdering[i],
                                         front: colors.front,
                                         back: colors.back),
                               scale: (1/3),
