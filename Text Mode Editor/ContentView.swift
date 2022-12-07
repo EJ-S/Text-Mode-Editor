@@ -350,6 +350,7 @@ func MakeImage(tile: UInt8, front: Color, back: Color) -> CGImage {
 
 struct ContentView: View {
     @State var showingTileSelect = false
+    @State var eraserSelected = false
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
@@ -358,7 +359,7 @@ struct ContentView: View {
         VStack {
             VStack{
                 HStack {
-                    Text("Tile")
+                    Text("Tile").font(.system(size: 20)).foregroundColor(Color.white)
                     Button(action: {
                         self.showingTileSelect.toggle()
                     }) {
@@ -371,22 +372,36 @@ struct ContentView: View {
                     }.sheet(isPresented: $showingTileSelect) {
                         TileSelectView().environmentObject(colors).environmentObject(tileChosen)
                     }
-                    ColorPicker("Primary", selection: $colors.front)
-                    ColorPicker("Accent", selection: $colors.back)
+                    ColorPicker("Primary", selection: $colors.front).font(.system(size: 20)).foregroundColor(Color.white)
+                    ColorPicker("Accent", selection: $colors.back).font(.system(size: 20)).foregroundColor(Color.white)
                 }.frame(maxWidth: .infinity,
                         maxHeight: 25,
                         alignment: .top)
             }
             .padding(10)
+            Button(action: {
+                self.eraserSelected.toggle()
+            }) {
+                if self.eraserSelected {
+                    Image("EraserPressed")
+                } else {
+                    Image("EraserNotPressed")
+                }
+            }
             Spacer(minLength: 100)
             VStack(alignment: .center, spacing: 0, content: {
                 ForEach(0..<15) { j in
                     HStack(alignment: .top, spacing: 0, content: {
                         ForEach(0..<15) { i in
                             Button(action: {
-                                let t = TileInfo(tile: tileChosen.tile,
-                                                 front: colors.front,
-                                                 back: colors.back)
+                                var t: TileInfo
+                                if self.eraserSelected {
+                                    t = TileInfo()
+                                } else {
+                                    t = TileInfo(tile: tileChosen.tile,
+                                                     front: colors.front,
+                                                     back: colors.back)
+                                }
                                 tileArray = updateTileArray(tileArray: tileArray, j: j, i: i, t: t)
                             }) {
                                 Image(MakeImage(tile: UInt8(tileArray[j*15+i].tile),
@@ -402,7 +417,7 @@ struct ContentView: View {
             }).frame(maxWidth: .infinity,
                      maxHeight: .infinity,
                      alignment: .top)
-        }.background(Color.mint)
+        }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
     }
 }
 
@@ -445,7 +460,7 @@ struct TileSelectView: View {
                 maxHeight: .infinity,
                 alignment: .topLeading)
         .padding(10)
-        .background(Color.cyan)
+        .background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
     }
 }
 
