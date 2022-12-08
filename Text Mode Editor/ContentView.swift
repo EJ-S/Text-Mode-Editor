@@ -533,17 +533,20 @@ struct ContentView: View {
                     }
                 }
             }.frame(maxWidth: .infinity)
+            //Spacer(minLength: 100)
             Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: { loc in
+                var locCpy = loc
+                if locCpy.x == 120 {locCpy.x = 119}
+                if locCpy.y == 120 {locCpy.y = 119}
                 var t = TileInfo()
                 if self.pencilSelected {
                     t = TileInfo(tile: tileChosen.tile,
                                      front: colors.front,
                                      back: colors.back)
                 }
-                tileArray = updateTileArray(tileArray: tileArray, j: Int(loc.y/8), i: Int(loc.x/8), t: t)
-            })
-            Spacer(minLength: 100)
-        }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
+                tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
+            }).scaleEffect(1)
+        }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1))).frame(maxHeight: .infinity, alignment: .top)
     }
 }
 
