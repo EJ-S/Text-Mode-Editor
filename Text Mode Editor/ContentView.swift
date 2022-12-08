@@ -351,6 +351,7 @@ func MakeImage(tile: UInt8, front: Color, back: Color) -> CGImage {
 struct ContentView: View {
     @State var showingTileSelect = false
     @State var eraserSelected = false
+    @State var pencilSelected = true
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
@@ -379,25 +380,36 @@ struct ContentView: View {
                         alignment: .top)
             }
             .padding(10)
-            Button(action: {
-                self.eraserSelected.toggle()
-            }) {
-                if self.eraserSelected {
-                    Image("EraserPressed")
-                } else {
-                    Image("EraserNotPressed")
+            HStack {
+                Button(action: {
+                    self.eraserSelected.toggle()
+                    self.pencilSelected.toggle()
+                }) {
+                    if self.eraserSelected {
+                        Image("EraserPressed")
+                    } else {
+                        Image("EraserNotPressed")
+                    }
                 }
-            }
+                Button(action: {
+                    self.eraserSelected.toggle()
+                    self.pencilSelected.toggle()
+                }) {
+                    if self.pencilSelected {
+                        Image("PencilPressed")
+                    } else {
+                        Image("PencilNotPressed")
+                    }
+                }
+            }.frame(maxWidth: .infinity)
             Spacer(minLength: 100)
             VStack(alignment: .center, spacing: 0, content: {
                 ForEach(0..<15) { j in
                     HStack(alignment: .top, spacing: 0, content: {
                         ForEach(0..<15) { i in
                             Button(action: {
-                                var t: TileInfo
-                                if self.eraserSelected {
-                                    t = TileInfo()
-                                } else {
+                                var t = TileInfo()
+                                if self.pencilSelected {
                                     t = TileInfo(tile: tileChosen.tile,
                                                      front: colors.front,
                                                      back: colors.back)
