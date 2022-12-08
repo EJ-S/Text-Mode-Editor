@@ -507,46 +507,46 @@ struct ContentView: View {
                     ColorPicker("Primary", selection: $colors.front).font(.system(size: 20)).foregroundColor(Color.white)
                     ColorPicker("Accent", selection: $colors.back).font(.system(size: 20)).foregroundColor(Color.white)
                 }.frame(maxWidth: .infinity,
-                        maxHeight: 25,
                         alignment: .top)
-            }
-            .padding(10)
-            HStack {
-                Button(action: {
-                    self.eraserSelected.toggle()
-                    self.pencilSelected.toggle()
-                }) {
-                    if self.eraserSelected {
-                        Image("EraserPressed")
-                    } else {
-                        Image("EraserNotPressed")
+                HStack {
+                    Button(action: {
+                        self.eraserSelected.toggle()
+                        self.pencilSelected.toggle()
+                    }) {
+                        if self.eraserSelected {
+                            Image("EraserPressed")
+                        } else {
+                            Image("EraserNotPressed")
+                        }
+                    }
+                    Button(action: {
+                        self.eraserSelected.toggle()
+                        self.pencilSelected.toggle()
+                    }) {
+                        if self.pencilSelected {
+                            Image("PencilPressed")
+                        } else {
+                            Image("PencilNotPressed")
+                        }
                     }
                 }
-                Button(action: {
-                    self.eraserSelected.toggle()
-                    self.pencilSelected.toggle()
-                }) {
+                Spacer()
+                Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: { loc in
+                    var locCpy = loc
+                    if locCpy.x == 120 {locCpy.x = 119}
+                    if locCpy.y == 120 {locCpy.y = 119}
+                    var t = TileInfo()
                     if self.pencilSelected {
-                        Image("PencilPressed")
-                    } else {
-                        Image("PencilNotPressed")
+                        t = TileInfo(tile: tileChosen.tile,
+                                         front: colors.front,
+                                         back: colors.back)
                     }
-                }
-            }.frame(maxWidth: .infinity)
-            //Spacer(minLength: 100)
-            Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: { loc in
-                var locCpy = loc
-                if locCpy.x == 120 {locCpy.x = 119}
-                if locCpy.y == 120 {locCpy.y = 119}
-                var t = TileInfo()
-                if self.pencilSelected {
-                    t = TileInfo(tile: tileChosen.tile,
-                                     front: colors.front,
-                                     back: colors.back)
-                }
-                tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
-            }).scaleEffect(1)
-        }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1))).frame(maxHeight: .infinity, alignment: .top)
+                    tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
+                }).scaleEffect(2.5)
+                Spacer()
+            }.frame(maxHeight: .infinity, alignment: .top)
+            .padding(10)
+        }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1))).frame(maxHeight: .infinity, alignment: .topLeading)
     }
 }
 
