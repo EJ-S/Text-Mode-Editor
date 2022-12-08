@@ -533,34 +533,16 @@ struct ContentView: View {
                     }
                 }
             }.frame(maxWidth: .infinity)
-            Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: updateLocation)
-            Spacer(minLength: 100)
-            VStack(alignment: .center, spacing: 0, content: {
-                ForEach(0..<15) { j in
-                    HStack(alignment: .top, spacing: 0, content: {
-                        ForEach(0..<15) { i in
-                            Button(action: {
-                                var t = TileInfo()
-                                if self.pencilSelected {
-                                    t = TileInfo(tile: tileChosen.tile,
-                                                     front: colors.front,
-                                                     back: colors.back)
-                                }
-                                tileArray = updateTileArray(tileArray: tileArray, j: j, i: i, t: t)
-                            }) {
-                                Image(MakeImage(tile: UInt8(tileArray[j*15+i].tile),
-                                                front: tileArray[j*15+i].front,
-                                                back: tileArray[j*15+i].back),
-                                      scale: (1/3),
-                                      label: Text("button"))
-                                .interpolation(Image.Interpolation.none)
-                            }
-                        }
-                    })
+            Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: { loc in
+                var t = TileInfo()
+                if self.pencilSelected {
+                    t = TileInfo(tile: tileChosen.tile,
+                                     front: colors.front,
+                                     back: colors.back)
                 }
-            }).frame(maxWidth: .infinity,
-                     maxHeight: .infinity,
-                     alignment: .top)
+                tileArray = updateTileArray(tileArray: tileArray, j: Int(loc.y/8), i: Int(loc.x/8), t: t)
+            })
+            Spacer(minLength: 100)
         }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
     }
 }
