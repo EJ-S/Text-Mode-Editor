@@ -465,6 +465,19 @@ func updateLocation(_ location: CGPoint) {
     print(location)
 }
 
+func makeImages(tileArray: [TileInfo]) -> UIImage? {
+    var imgArr: [UIImage] = []
+    for t in tileArray {
+        imgArr.append(UIImage(cgImage: MakeImage(tile: UInt8(t.tile), front: t.front, back: t.back)))
+    }
+    return UIGraphicsImageRenderer(size: CGSize(width: 120, height: 120)).image { context in
+        for (i, image) in imgArr.enumerated() {
+            let pos = CGPoint(x:(i%15)*8, y:(i/15)*8)
+            image.draw(at: pos)
+        }
+    }
+}
+
 
 struct ContentView: View {
     @State var showingTileSelect = false
@@ -520,7 +533,7 @@ struct ContentView: View {
                     }
                 }
             }.frame(maxWidth: .infinity)
-            Image("EraserPressed").onTouch(perform: updateLocation)
+            Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: updateLocation)
             Spacer(minLength: 100)
             VStack(alignment: .center, spacing: 0, content: {
                 ForEach(0..<15) { j in
