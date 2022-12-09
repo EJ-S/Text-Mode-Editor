@@ -478,11 +478,41 @@ func makeImages(tileArray: [TileInfo]) -> UIImage? {
     }
 }
 
+func fillTiles(tileArray: [TileInfo], loc: Int) -> [Int] {
+    var tilesToChange: [Int] = []
+    var tileStack = [loc]
+    while !tileStack.isEmpty {
+        let thisLoc = tileStack.popLast()!
+        if tilesToChange.contains(thisLoc) {
+            continue
+        }
+        tilesToChange.append(thisLoc)
+        if (thisLoc+1)/15 == thisLoc/15 &&
+            equalTiles(t1: tileArray[thisLoc], t2: tileArray[thisLoc+1]) {
+            tileStack.append(thisLoc+1)
+        }
+        if (thisLoc-1)/15 == thisLoc/15 && thisLoc-1 >= 0 &&
+        equalTiles(t1: tileArray[thisLoc], t2: tileArray[thisLoc-1]){
+            tileStack.append(thisLoc-1)
+            
+        }
+        if thisLoc/15 < 14 && equalTiles(t1: tileArray[thisLoc], t2: tileArray[thisLoc+15]) {tileStack.append(thisLoc+15)}
+        if thisLoc/15 > 0 && equalTiles(t1: tileArray[thisLoc], t2: tileArray[thisLoc-15]) {tileStack.append(thisLoc-15)}
+    }
+    return tilesToChange
+}
+
+
+func equalTiles(t1: TileInfo, t2: TileInfo) -> Bool {
+    return t1.tile == t2.tile && t1.front == t2.front && t1.back == t2.back
+}
+
 
 struct ContentView: View {
     @State var showingTileSelect = false
     @State var eraserSelected = false
     @State var pencilSelected = true
+    @State var fillSelected = false
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
@@ -511,8 +541,9 @@ struct ContentView: View {
                         alignment: .top)
                 HStack {
                     Button(action: {
-                        self.eraserSelected.toggle()
-                        self.pencilSelected.toggle()
+                        self.eraserSelected = true
+                        self.pencilSelected = false
+                        self.fillSelected = false
                     }) {
                         if self.eraserSelected {
                             Image("EraserPressed")
@@ -521,13 +552,25 @@ struct ContentView: View {
                         }
                     }
                     Button(action: {
-                        self.eraserSelected.toggle()
-                        self.pencilSelected.toggle()
+                        self.eraserSelected = false
+                        self.pencilSelected = true
+                        self.fillSelected = false
                     }) {
                         if self.pencilSelected {
                             Image("PencilPressed")
                         } else {
                             Image("PencilNotPressed")
+                        }
+                    }
+                    Button(action: {
+                        self.eraserSelected = false
+                        self.pencilSelected = false
+                        self.fillSelected = true
+                    }) {
+                        if self.fillSelected {
+                            Image("BucketPressed")
+                        } else {
+                            Image("BucketNotPressed")
                         }
                     }
                 }
@@ -546,7 +589,14 @@ struct ContentView: View {
                         recentChanges.remove(at: 0)
                     }
                     recentChanges.append(tileArray)
-                    tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
+                    if self.pencilSelected || self.eraserSelected {
+                        tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
+                    } else {
+                        for tileNum in fillTiles(tileArray: tileArray, loc: Int((locCpy.y/8))*15+Int((locCpy.x/8))) {
+                            t = TileInfo(tile: tileChosen.tile, front: colors.front, back: colors.back)
+                            tileArray = updateTileArray(tileArray: tileArray, j: Int(tileNum/15), i: Int(tileNum%15), t: t)
+                        }
+                    }
                     if tileArray.elementsEqual(recentChanges[recentChanges.endIndex-1],
                        by: { tile1, tile2 in
                         return tile1.tile == tile2.tile && tile1.front == tile2.front && tile1.back == tile2.back
