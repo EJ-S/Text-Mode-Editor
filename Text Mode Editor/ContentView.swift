@@ -674,6 +674,8 @@ struct ContentView: View {
                     }) {
                         Image("ClearPressed").interpolation(Image.Interpolation.none)
                     }
+                    let image = Image(uiImage: makeImages(tileArray: tileArray)!)
+                    ShareLink(item: image, preview: SharePreview("Drawing", image: image))
                 }
             }.frame(maxHeight: .infinity, alignment: .top)
             .padding(10)
