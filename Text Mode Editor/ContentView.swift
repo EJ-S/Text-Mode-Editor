@@ -532,10 +532,10 @@ struct ContentView: View {
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
     @State private var recentChanges: [[TileInfo]] = [[TileInfo](repeating: TileInfo(), count: 225)]
-    @State private var recentTiles: [TileChosen] = [TileChosen(tile: 1), TileChosen(tile: 2), TileChosen(tile: 3),
-                                                    TileChosen(tile: 4),TileChosen(tile: 5), TileChosen(tile: 6),
-                                                    TileChosen(tile: 7), TileChosen(tile: 8),
-                                                    TileChosen(tile: 9), TileChosen(tile: 10)]
+    @State private var recentTiles: [TileChosen] = [TileChosen(tile: 32), TileChosen(tile: 160), TileChosen(tile: 95),
+                                                    TileChosen(tile: 105),TileChosen(tile: 223), TileChosen(tile: 233),
+                                                    TileChosen(tile: 97), TileChosen(tile: 225),
+                                                    TileChosen(tile: 98), TileChosen(tile: 226)]
     
     var body: some View {
         VStack {
