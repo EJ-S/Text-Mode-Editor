@@ -525,10 +525,10 @@ func equalTiles(t1: TileInfo, t2: TileInfo) -> Bool {
 
 
 struct ContentView: View {
-    @State var showingTileSelect = false
-    @State var eraserSelected = false
-    @State var pencilSelected = true
-    @State var fillSelected = false
+    @State private var showingTileSelect = false
+    @State private var eraserSelected = false
+    @State private var pencilSelected = true
+    @State private var fillSelected = false
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
