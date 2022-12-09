@@ -407,9 +407,10 @@ extension TileChosen: Equatable {
 class TileInfo {
     var tile = 127
     var front = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
-    var back = Color.gray
+    var back = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
     
-    init(tile: Int = 127, front: SwiftUI.Color = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), back: SwiftUI.Color = Color.gray) {
+    init(tile: Int = 127, front: SwiftUI.Color = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)),
+         back: SwiftUI.Color = Color(CGColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1))) {
         self.tile = tile
         self.front = front
         self.back = back
