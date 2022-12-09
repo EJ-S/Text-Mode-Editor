@@ -486,6 +486,7 @@ struct ContentView: View {
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
+    @State private var recentChanges: [[TileInfo]] = [[TileInfo](repeating: TileInfo(), count: 225)]
     
     var body: some View {
         VStack {
@@ -541,9 +542,43 @@ struct ContentView: View {
                                          front: colors.front,
                                          back: colors.back)
                     }
+                    if recentChanges.count == 50 {
+                        recentChanges.remove(at: 0)
+                    }
+                    recentChanges.append(tileArray)
                     tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
+                    if tileArray.elementsEqual(recentChanges[recentChanges.endIndex-1],
+                       by: { tile1, tile2 in
+                        return tile1.tile == tile2.tile && tile1.front == tile2.front && tile1.back == tile2.back
+                    }) {
+                        let _ = recentChanges.popLast()
+                    }
                 }).scaleEffect(2.5)
                 Spacer()
+                HStack {
+                    Button(action: {
+                        if recentChanges.count > 0 {
+                            tileArray = recentChanges.popLast()!
+                        }
+                    }) {
+                        Image("UndoPressed").interpolation(Image.Interpolation.none)
+                    }
+                    Button(action: {
+                        if recentChanges.count == 50 {
+                            recentChanges.remove(at: 0)
+                        }
+                        recentChanges.append(tileArray)
+                        tileArray = [TileInfo](repeating: TileInfo(), count: 225)
+                        if tileArray.elementsEqual(recentChanges[recentChanges.endIndex-1],
+                           by: { tile1, tile2 in
+                            return tile1.tile == tile2.tile && tile1.front == tile2.front && tile1.back == tile2.back
+                        }) {
+                            let _ = recentChanges.popLast()
+                        }
+                    }) {
+                        Image("ClearPressed").interpolation(Image.Interpolation.none)
+                    }
+                }
             }.frame(maxHeight: .infinity, alignment: .top)
             .padding(10)
         }.background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1))).frame(maxHeight: .infinity, alignment: .topLeading)
