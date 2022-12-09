@@ -387,6 +387,21 @@ class ColorsChosen: ObservableObject {
 
 class TileChosen: ObservableObject {
     @Published var tile = 32
+    init(tile: Int = 32) {
+        self.tile = tile
+    }
+}
+
+extension TileChosen: Identifiable {
+    var id: Int {
+        return self.tile
+    }
+}
+
+extension TileChosen: Equatable {
+    static func == (lhs: TileChosen, rhs: TileChosen) -> Bool {
+        return lhs.tile == rhs.tile
+    }
 }
 
 class TileInfo {
@@ -517,6 +532,10 @@ struct ContentView: View {
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
     @State private var recentChanges: [[TileInfo]] = [[TileInfo](repeating: TileInfo(), count: 225)]
+    @State private var recentTiles: [TileChosen] = [TileChosen(tile: 1), TileChosen(tile: 2), TileChosen(tile: 3),
+                                                    TileChosen(tile: 4),TileChosen(tile: 5), TileChosen(tile: 6),
+                                                    TileChosen(tile: 7), TileChosen(tile: 8),
+                                                    TileChosen(tile: 9), TileChosen(tile: 10)]
     
     var body: some View {
         VStack {
@@ -579,11 +598,18 @@ struct ContentView: View {
                     var locCpy = loc
                     if locCpy.x == 120 {locCpy.x = 119}
                     if locCpy.y == 120 {locCpy.y = 119}
+                    let tileNumber = tileChosen.tile
                     var t = TileInfo()
                     if self.pencilSelected {
                         t = TileInfo(tile: tileChosen.tile,
                                          front: colors.front,
                                          back: colors.back)
+                        if let index = recentTiles.firstIndex(of: tileChosen) {
+                            recentTiles.remove(at: index)
+                        } else {
+                            let _ = recentTiles.popLast()
+                        }
+                        recentTiles.insert(TileChosen(tile: tileNumber), at: 0)
                     }
                     if recentChanges.count == 50 {
                         recentChanges.remove(at: 0)
@@ -596,6 +622,12 @@ struct ContentView: View {
                             t = TileInfo(tile: tileChosen.tile, front: colors.front, back: colors.back)
                             tileArray = updateTileArray(tileArray: tileArray, j: Int(tileNum/15), i: Int(tileNum%15), t: t)
                         }
+                        if let index = recentTiles.firstIndex(of: tileChosen) {
+                            recentTiles.remove(at: index)
+                        } else {
+                            let _ = recentTiles.popLast()
+                        }
+                        recentTiles.insert(TileChosen(tile: tileNumber), at: 0)
                     }
                     if tileArray.elementsEqual(recentChanges[recentChanges.endIndex-1],
                        by: { tile1, tile2 in
@@ -605,6 +637,19 @@ struct ContentView: View {
                     }
                 }).scaleEffect(2.5)
                 Spacer()
+                HStack{
+                    ForEach(recentTiles) { t in
+                        Button(action: {
+                            tileChosen.tile = t.tile
+                        }) {
+                            Image(MakeImage(tile: UInt8(t.tile),
+                                            front: colors.front,
+                                            back: colors.back),
+                                  scale: (1/3),
+                                  label: Text("")).interpolation(Image.Interpolation.none)
+                        }
+                    }
+                }
                 HStack {
                     Button(action: {
                         if recentChanges.count > 0 {
