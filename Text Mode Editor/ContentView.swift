@@ -494,6 +494,32 @@ func makeImages(tileArray: [TileInfo]) -> UIImage? {
     }
 }
 
+func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+    let size = image.size
+    
+    let widthRatio  = targetSize.width  / size.width
+    let heightRatio = targetSize.height / size.height
+    
+    // Figure out what our orientation is, and use that to form the rectangle
+    var newSize: CGSize
+    if(widthRatio > heightRatio) {
+        newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+    } else {
+        newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+    }
+    
+    // This is the rect that we've calculated out and this is what is actually used below
+    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+    
+    // Actually do the resizing to the rect using the ImageContext stuff
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    image.draw(in: rect)
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return newImage!
+}
+
 func fillTiles(tileArray: [TileInfo], loc: Int) -> [Int] {
     var tilesToChange: [Int] = []
     var tileStack = [loc]
@@ -674,7 +700,8 @@ struct ContentView: View {
                     }) {
                         Image("ClearPressed").interpolation(Image.Interpolation.none)
                     }
-                    let image = Image(uiImage: makeImages(tileArray: tileArray)!).interpolation(Image.Interpolation.none)
+                    let smallImg = makeImages(tileArray: tileArray)!
+                    let image = Image(uiImage: resizeImage(image: smallImg, targetSize: CGSizeMake(1080, 1080))).interpolation(Image.Interpolation.none)
                     ShareLink(item: image, preview: SharePreview("Drawing", image: image))
                 }
             }.frame(maxHeight: .infinity, alignment: .top)
