@@ -621,7 +621,7 @@ struct ContentView: View {
                     }
                 }
                 Spacer()
-                Image(uiImage: makeImages(tileArray: tileArray)!).onTouch(perform: { loc in
+                Image(uiImage: makeImages(tileArray: tileArray)!).interpolation(.none).onTouch(perform: { loc in
                     var locCpy = loc
                     if locCpy.x == 120 {locCpy.x = 119}
                     if locCpy.y == 120 {locCpy.y = 119}
