@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF29B578295CE493002EFE60 /* c64fontmono.txt in Resources */ = {isa = PBXBuildFile; fileRef = CF29B577295CE493002EFE60 /* c64fontmono.txt */; };
+		CF29B579295CE493002EFE60 /* c64fontmono.txt in Resources */ = {isa = PBXBuildFile; fileRef = CF29B577295CE493002EFE60 /* c64fontmono.txt */; };
+		CF29B57A295CE493002EFE60 /* c64fontmono.txt in Resources */ = {isa = PBXBuildFile; fileRef = CF29B577295CE493002EFE60 /* c64fontmono.txt */; };
 		CF599D0A293D806B009F0BDB /* Text_Mode_EditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF599D09293D806B009F0BDB /* Text_Mode_EditorApp.swift */; };
 		CF599D0C293D806B009F0BDB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF599D0B293D806B009F0BDB /* ContentView.swift */; };
 		CF599D0E293D806C009F0BDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF599D0D293D806C009F0BDB /* Assets.xcassets */; };
@@ -34,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CF29B577295CE493002EFE60 /* c64fontmono.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = c64fontmono.txt; path = "../../../../Library/Mobile Documents/com~apple~TextEdit/Documents/c64fontmono.txt"; sourceTree = "<group>"; };
 		CF599D06293D806B009F0BDB /* Text Mode Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Text Mode Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF599D09293D806B009F0BDB /* Text_Mode_EditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text_Mode_EditorApp.swift; sourceTree = "<group>"; };
 		CF599D0B293D806B009F0BDB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -94,6 +98,7 @@
 		CF599D08293D806B009F0BDB /* Text Mode Editor */ = {
 			isa = PBXGroup;
 			children = (
+				CF29B577295CE493002EFE60 /* c64fontmono.txt */,
 				CF599D09293D806B009F0BDB /* Text_Mode_EditorApp.swift */,
 				CF599D0B293D806B009F0BDB /* ContentView.swift */,
 				CF599D0D293D806C009F0BDB /* Assets.xcassets */,
@@ -232,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF599D11293D806C009F0BDB /* Preview Assets.xcassets in Resources */,
+				CF29B578295CE493002EFE60 /* c64fontmono.txt in Resources */,
 				CF599D0E293D806C009F0BDB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,6 +246,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF29B579295CE493002EFE60 /* c64fontmono.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +254,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF29B57A295CE493002EFE60 /* c64fontmono.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
