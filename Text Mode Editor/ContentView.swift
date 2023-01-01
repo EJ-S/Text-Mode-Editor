@@ -318,6 +318,7 @@ struct ContentView: View {
     @State private var eraserSelected = false
     @State private var pencilSelected = true
     @State private var fillSelected = false
+    @State private var showingSaveLoad = false
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
     @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
@@ -466,6 +467,13 @@ struct ContentView: View {
                     let smallImg = makeImages(tileArray: tileArray)!
                     let image = Image(uiImage: resizeImage(image: smallImg, targetSize: CGSizeMake(1080, 1080))).interpolation(Image.Interpolation.none)
                     ShareLink(item: image, preview: SharePreview("Drawing", image: image))
+                    Button(action: {
+                        self.showingSaveLoad.toggle()
+                    }) {
+                        Text("save button")
+                    }.sheet(isPresented: $showingSaveLoad) {
+                        SaveLoadView()
+                    }
                 }
             }.frame(maxHeight: .infinity, alignment: .top)
             .padding(10)
@@ -526,6 +534,29 @@ struct TileSelectView: View {
                 maxHeight: .infinity,
                 alignment: .topLeading)
         .padding(10)
+        .background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
+    }
+}
+
+struct SaveLoadView: View {
+    var body: some View {
+        VStack {
+            Text("Save/Load")
+            ForEach(0..<5) { i in
+                HStack(spacing: 10) {
+                    Image(MakeImage(tile: UInt8(i), front: Color.white, back: Color.black),
+                    scale: 1/5,
+                    label: Text(""))
+                    .interpolation(.none)
+                    Button(action: {print("Pressed")}) {
+                        Text("Load \(i)")
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .topLeading)
         .background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
     }
 }
