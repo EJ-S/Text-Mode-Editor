@@ -168,7 +168,17 @@ extension TileChosen: Equatable {
     }
 }
 
-public class TileInfo: ObservableObject {
+
+class Tiles: ObservableObject {
+    
+    @Published public var tileArr: [TileInfo]
+    
+    init(tileArrAdded: [TileInfo]) {
+        self.tileArr = tileArrAdded
+    }
+}
+
+public class TileInfo {
     
     var tile = 127
     var front = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
@@ -408,13 +418,13 @@ struct ContentView: View {
                     if recentChanges.count == 50 {
                         recentChanges.remove(at: 0)
                     }
-                    recentChanges.append(tileArray)
+                    recentChanges.append(tileArray.tileArr)
                     if self.pencilSelected || self.eraserSelected {
-                        tileArray = updateTileArray(tileArray: tileArray, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
+                        tileArray.tileArr = updateTileArray(tileArray: tileArray.tileArr, j: Int(locCpy.y/8), i: Int(locCpy.x/8), t: t)
                     } else {
-                        for tileNum in fillTiles(tileArray: tileArray, loc: Int((locCpy.y/8))*15+Int((locCpy.x/8))) {
+                        for tileNum in fillTiles(tileArray: tileArray.tileArr, loc: Int((locCpy.y/8))*15+Int((locCpy.x/8))) {
                             t = TileInfo(tile: tileChosen.tile, front: colors.front, back: colors.back)
-                            tileArray = updateTileArray(tileArray: tileArray, j: Int(tileNum/15), i: Int(tileNum%15), t: t)
+                            tileArray.tileArr = updateTileArray(tileArray: tileArray.tileArr, j: Int(tileNum/15), i: Int(tileNum%15), t: t)
                         }
                         if let index = recentTiles.firstIndex(of: tileChosen) {
                             recentTiles.remove(at: index)
@@ -423,7 +433,7 @@ struct ContentView: View {
                         }
                         recentTiles.insert(TileChosen(tile: tileNumber), at: 0)
                     }
-                    if tileArray.elementsEqual(recentChanges[recentChanges.endIndex-1],
+                    if tileArray.tileArr.elementsEqual(recentChanges[recentChanges.endIndex-1],
                        by: { tile1, tile2 in
                         return tile1.tile == tile2.tile && tile1.front == tile2.front && tile1.back == tile2.back
                     }) {
@@ -447,7 +457,7 @@ struct ContentView: View {
                 HStack {
                     Button(action: {
                         if recentChanges.count > 0 {
-                            tileArray = recentChanges.popLast()!
+                            tileArray.tileArr = recentChanges.popLast()!
                         }
                     }) {
                         Image("UndoPressed").interpolation(Image.Interpolation.none)
@@ -456,9 +466,9 @@ struct ContentView: View {
                         if recentChanges.count == 50 {
                             recentChanges.remove(at: 0)
                         }
-                        recentChanges.append(tileArray)
-                        tileArray = [TileInfo](repeating: TileInfo(), count: 225)
-                        if tileArray.elementsEqual(recentChanges[recentChanges.endIndex-1],
+                        recentChanges.append(tileArray.tileArr)
+                        tileArray.tileArr = [TileInfo](repeating: TileInfo(), count: 225)
+                        if tileArray.tileArr.elementsEqual(recentChanges[recentChanges.endIndex-1],
                            by: { tile1, tile2 in
                             return tile1.tile == tile2.tile && tile1.front == tile2.front && tile1.back == tile2.back
                         }) {
@@ -617,7 +627,7 @@ struct SaveLoadView: View {
                         fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
                     }
                 }) {
-                    Text("Save")
+                    Text("Save New")
                 }
 
             }
@@ -643,7 +653,6 @@ struct SaveLoadView: View {
         .frame(maxWidth: .infinity,
                 maxHeight: .infinity,
                 alignment: .topLeading)
-        .background(Color(CGColor(red: 0.25, green: 0.2, blue: 0.25, alpha: 1)))
     }
 }
 
