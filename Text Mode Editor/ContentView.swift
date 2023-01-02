@@ -168,7 +168,7 @@ extension TileChosen: Equatable {
     }
 }
 
-public class TileInfo: NSObject {
+public class TileInfo: ObservableObject {
     
     var tile = 127
     var front = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
@@ -324,7 +324,7 @@ struct ContentView: View {
     @State private var showingSaveLoad = false
     @StateObject private var colors = ColorsChosen()
     @StateObject private var tileChosen = TileChosen()
-    @State private var tileArray: [TileInfo] = [TileInfo](repeating: TileInfo(), count: 225)
+    @StateObject private var tileArray: Tiles = Tiles(tileArrAdded: [TileInfo](repeating: TileInfo(), count: 225))
     @State private var recentChanges: [[TileInfo]] = [[TileInfo](repeating: TileInfo(), count: 225)]
     @State private var recentTiles: [TileChosen] = [TileChosen(tile: 32), TileChosen(tile: 160), TileChosen(tile: 95),
                                                     TileChosen(tile: 105),TileChosen(tile: 223), TileChosen(tile: 233),
@@ -388,7 +388,7 @@ struct ContentView: View {
                     }
                 }
                 Spacer()
-                Image(uiImage: makeImages(tileArray: tileArray)!).interpolation(.none).onTouch(perform: { loc in
+                Image(uiImage: makeImages(tileArray: tileArray.tileArr)!).interpolation(.none).onTouch(perform: { loc in
                     var locCpy = loc
                     if locCpy.x == 120 {locCpy.x = 119}
                     if locCpy.y == 120 {locCpy.y = 119}
@@ -467,7 +467,7 @@ struct ContentView: View {
                     }) {
                         Image("ClearPressed").interpolation(Image.Interpolation.none)
                     }
-                    let smallImg = makeImages(tileArray: tileArray)!
+                    let smallImg = makeImages(tileArray: tileArray.tileArr)!
                     let image = Image(uiImage: resizeImage(image: smallImg, targetSize: CGSizeMake(1080, 1080))).interpolation(Image.Interpolation.none)
                     ShareLink(item: image, preview: SharePreview("Drawing", image: image))
                     Button(action: {
@@ -475,7 +475,7 @@ struct ContentView: View {
                     }) {
                         Text("save button")
                     }.sheet(isPresented: $showingSaveLoad) {
-                        SaveLoadView(context: viewContext, currentImage: tileArray)
+                        SaveLoadView(context: viewContext).environmentObject(tileArray)
                     }
                 }
             }.frame(maxHeight: .infinity, alignment: .top)
@@ -543,7 +543,7 @@ struct TileSelectView: View {
 
 struct SaveLoadView: View {
     var context: NSManagedObjectContext
-    let currentImage: [TileInfo]
+    @EnvironmentObject var currentImage: Tiles
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ImageEntry.dateSaved, ascending: true)],
         animation: .default)
@@ -582,9 +582,23 @@ struct SaveLoadView: View {
         return (nums, colors)
     }
     
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { items[$0] }.forEach(context.delete)
+
+            do {
+                try context.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
     
     var body: some View {
-        let (tileNums, tileColors) = self.tileArrToSaved(tileArr: currentImage)
+        let (tileNums, tileColors) = self.tileArrToSaved(tileArr: currentImage.tileArr)
         VStack {
             HStack{
                 Button(action: {
@@ -613,16 +627,17 @@ struct SaveLoadView: View {
                     HStack(spacing: 10) {
                         Image(uiImage: makeImages(tileArray: curTileArr)!)
                             .interpolation(.none)
-                        Button(action: {print("Pressed")}) {
-                            Text("Load \(item.drawingName!)")
-                        }
-                        Button(action: {
-                            print("Will Delete")
-                        }) {
-                            Text("Delete Drawing")
+                        VStack {
+                            Button(action: {
+                                currentImage.tileArr = self.savedToTileArr(tileNums: item.tileNumArray!, tileColors: item.tileColorArray!)
+                            }) {
+                                Text("\(item.drawingName!)")
+                            }
+                            Text("Last Saved On: \(item.dateSaved!)")
                         }
                     }
                 }
+                .onDelete(perform: deleteItems)
             }
         }
         .frame(maxWidth: .infinity,

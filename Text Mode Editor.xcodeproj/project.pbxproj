@@ -16,6 +16,9 @@
 		CF29B5B029626196002EFE60 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29B5AF29626196002EFE60 /* Persistence.swift */; };
 		CF29B5B129626196002EFE60 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29B5AF29626196002EFE60 /* Persistence.swift */; };
 		CF29B5B229626196002EFE60 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29B5AF29626196002EFE60 /* Persistence.swift */; };
+		CF29B5BC2962B504002EFE60 /* Tiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29B5BB2962B504002EFE60 /* Tiles.swift */; };
+		CF29B5BD2962B504002EFE60 /* Tiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29B5BB2962B504002EFE60 /* Tiles.swift */; };
+		CF29B5BE2962B504002EFE60 /* Tiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29B5BB2962B504002EFE60 /* Tiles.swift */; };
 		CF599D0A293D806B009F0BDB /* Text_Mode_EditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF599D09293D806B009F0BDB /* Text_Mode_EditorApp.swift */; };
 		CF599D0C293D806B009F0BDB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF599D0B293D806B009F0BDB /* ContentView.swift */; };
 		CF599D0E293D806C009F0BDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF599D0D293D806C009F0BDB /* Assets.xcassets */; };
@@ -46,6 +49,7 @@
 		CF29B577295CE493002EFE60 /* c64fontmono.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = c64fontmono.txt; path = "../../../../Library/Mobile Documents/com~apple~TextEdit/Documents/c64fontmono.txt"; sourceTree = "<group>"; };
 		CF29B57C29610CF2002EFE60 /* UserImages.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserImages.xcdatamodel; sourceTree = "<group>"; };
 		CF29B5AF29626196002EFE60 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = SOURCE_ROOT; };
+		CF29B5BB2962B504002EFE60 /* Tiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tiles.swift; sourceTree = "<group>"; };
 		CF599D06293D806B009F0BDB /* Text Mode Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Text Mode Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF599D09293D806B009F0BDB /* Text_Mode_EditorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text_Mode_EditorApp.swift; sourceTree = "<group>"; };
 		CF599D0B293D806B009F0BDB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 				CF29B57B29610CF2002EFE60 /* UserImages.xcdatamodeld */,
 				CF29B577295CE493002EFE60 /* c64fontmono.txt */,
 				CF599D09293D806B009F0BDB /* Text_Mode_EditorApp.swift */,
+				CF29B5BB2962B504002EFE60 /* Tiles.swift */,
 				CF599D0B293D806B009F0BDB /* ContentView.swift */,
 				CF599D0D293D806C009F0BDB /* Assets.xcassets */,
 				CF29B5AF29626196002EFE60 /* Persistence.swift */,
@@ -276,6 +281,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF599D0C293D806B009F0BDB /* ContentView.swift in Sources */,
+				CF29B5BC2962B504002EFE60 /* Tiles.swift in Sources */,
 				CF29B57D29610CF2002EFE60 /* UserImages.xcdatamodeld in Sources */,
 				CF599D0A293D806B009F0BDB /* Text_Mode_EditorApp.swift in Sources */,
 				CF29B5B029626196002EFE60 /* Persistence.swift in Sources */,
@@ -289,6 +295,7 @@
 				CF29B5B129626196002EFE60 /* Persistence.swift in Sources */,
 				CF29B57E29610CF2002EFE60 /* UserImages.xcdatamodeld in Sources */,
 				CF599D1B293D806C009F0BDB /* Text_Mode_EditorTests.swift in Sources */,
+				CF29B5BD2962B504002EFE60 /* Tiles.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF599D25293D806C009F0BDB /* Text_Mode_EditorUITests.swift in Sources */,
+				CF29B5BE2962B504002EFE60 /* Tiles.swift in Sources */,
 				CF29B57F29610CF2002EFE60 /* UserImages.xcdatamodeld in Sources */,
 				CF599D27293D806C009F0BDB /* Text_Mode_EditorUITestsLaunchTests.swift in Sources */,
 				CF29B5B229626196002EFE60 /* Persistence.swift in Sources */,
