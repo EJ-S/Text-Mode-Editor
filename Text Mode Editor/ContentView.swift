@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 func LoadTiles() -> [[Int]] {
     var tileData: [[Int]] = [[]]
@@ -167,7 +168,8 @@ extension TileChosen: Equatable {
     }
 }
 
-class TileInfo {
+public class TileInfo: NSObject {
+    
     var tile = 127
     var front = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
     var back = Color(CGColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1))
@@ -314,6 +316,7 @@ func equalTiles(t1: TileInfo, t2: TileInfo) -> Bool {
 
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var showingTileSelect = false
     @State private var eraserSelected = false
     @State private var pencilSelected = true
@@ -472,7 +475,7 @@ struct ContentView: View {
                     }) {
                         Text("save button")
                     }.sheet(isPresented: $showingSaveLoad) {
-                        SaveLoadView()
+                        SaveLoadView(context: viewContext, currentImage: tileArray)
                     }
                 }
             }.frame(maxHeight: .infinity, alignment: .top)
@@ -539,17 +542,48 @@ struct TileSelectView: View {
 }
 
 struct SaveLoadView: View {
+    var context: NSManagedObjectContext
+    let currentImage: [TileInfo]
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \ImageEntry.dateSaved, ascending: true)],
+        animation: .default)
+    private var items: FetchedResults<ImageEntry>
+    
     var body: some View {
         VStack {
-            Text("Save/Load")
-            ForEach(0..<5) { i in
-                HStack(spacing: 10) {
-                    Image(MakeImage(tile: UInt8(i), front: Color.white, back: Color.black),
-                    scale: 1/5,
-                    label: Text(""))
-                    .interpolation(.none)
-                    Button(action: {print("Pressed")}) {
-                        Text("Load \(i)")
+            HStack{
+                Button(action: {
+                    let newImage = ImageEntry(context: context)
+                    newImage.dateSaved = Date()
+                    newImage.tileArray = currentImage
+                    newImage.drawingName = "PlaceHolder"
+                    
+                    do {
+                        try context.save()
+                    } catch {
+                        // Replace this implementation with code to handle the error appropriately.
+                        // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                        let nsError = error as NSError
+                        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                    }
+                }) {
+                    Text("Save")
+                }
+
+            }
+            List {
+                ForEach(items) { item in
+                    HStack(spacing: 10) {
+                        Image(uiImage: makeImages(tileArray: item.tileArray!)!)
+                            .interpolation(.none)
+                        Button(action: {print("Pressed")}) {
+                            Text("Load \(item.drawingName!)")
+                        }
+                        Button(action: {
+                            print("Will Delete")
+                        }) {
+                            Text("Delete Drawing")
+                        }
                     }
                 }
             }
