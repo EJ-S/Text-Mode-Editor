@@ -549,13 +549,49 @@ struct SaveLoadView: View {
         animation: .default)
     private var items: FetchedResults<ImageEntry>
     
+    func savedToTileArr(tileNums: [Int32], tileColors: [[Int32]]) -> [TileInfo] {
+        var savedImage: [TileInfo] = []
+        
+        for (num, colorData) in zip(tileNums, tileColors) {
+            let currTile = TileInfo(tile: Int(num),
+                                    front: Color(CGColor(red: CGFloat(colorData[0])/255.0,
+                                                         green: CGFloat(colorData[1])/255.0,
+                                                         blue: CGFloat(colorData[2])/255.0, alpha: 1.0)),
+                                    back: Color(CGColor(red: CGFloat(colorData[3])/255.0,
+                                                        green: CGFloat(colorData[4])/255.0,
+                                                        blue: CGFloat(colorData[5])/255.0, alpha: 1.0)))
+            savedImage.append(currTile)
+        }
+        return savedImage
+    }
+    
+    func tileArrToSaved(tileArr: [TileInfo]) -> ([Int32], [[Int32]]) {
+        var nums: [Int32] = []
+        var colors: [[Int32]] = []
+        for tile in tileArr {
+            nums.append(Int32(tile.tile))
+            var curColors: [Int32] = []
+            curColors.append(Int32(UIColor(tile.front).cgColor.components![0]*255))
+            curColors.append(Int32(UIColor(tile.front).cgColor.components![1]*255))
+            curColors.append(Int32(UIColor(tile.front).cgColor.components![2]*255))
+            curColors.append(Int32(UIColor(tile.back).cgColor.components![0]*255))
+            curColors.append(Int32(UIColor(tile.back).cgColor.components![1]*255))
+            curColors.append(Int32(UIColor(tile.back).cgColor.components![2]*255))
+            colors.append(curColors)
+        }
+        return (nums, colors)
+    }
+    
+    
     var body: some View {
+        let (tileNums, tileColors) = self.tileArrToSaved(tileArr: currentImage)
         VStack {
             HStack{
                 Button(action: {
                     let newImage = ImageEntry(context: context)
                     newImage.dateSaved = Date()
-                    newImage.tileArray = currentImage
+                    newImage.tileNumArray = tileNums
+                    newImage.tileColorArray = tileColors
                     newImage.drawingName = "PlaceHolder"
                     
                     do {
@@ -573,8 +609,9 @@ struct SaveLoadView: View {
             }
             List {
                 ForEach(items) { item in
+                    let curTileArr = self.savedToTileArr(tileNums: item.tileNumArray!, tileColors: item.tileColorArray!)
                     HStack(spacing: 10) {
-                        Image(uiImage: makeImages(tileArray: item.tileArray!)!)
+                        Image(uiImage: makeImages(tileArray: curTileArr)!)
                             .interpolation(.none)
                         Button(action: {print("Pressed")}) {
                             Text("Load \(item.drawingName!)")

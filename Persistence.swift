@@ -16,7 +16,8 @@ struct PersistenceController {
         for _ in 0..<10 {
             let newItem = ImageEntry(context: viewContext)
             newItem.dateSaved = Date()
-            newItem.tileArray = Array(repeating: TileInfo(), count: 225)
+            newItem.tileNumArray = Array(repeating: 32, count: 225)
+            newItem.tileColorArray = Array(repeating: [255, 255, 255, 0, 0, 0], count: 255)
         }
         do {
             try viewContext.save()

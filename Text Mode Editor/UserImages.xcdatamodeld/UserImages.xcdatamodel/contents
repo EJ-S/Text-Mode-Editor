@@ -3,7 +3,7 @@
     <entity name="ImageEntry" representedClassName="ImageEntry" syncable="YES" codeGenerationType="class">
         <attribute name="dateSaved" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="drawingName" optional="YES" attributeType="String"/>
-        <attribute name="tileColorArray" optional="YES" attributeType="Transformable" customClassName="[TileColorData]"/>
+        <attribute name="tileColorArray" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[Int32]]"/>
         <attribute name="tileNumArray" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int32]"/>
     </entity>
 </model>
